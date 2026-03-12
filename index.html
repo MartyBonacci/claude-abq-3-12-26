@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code ABQ — March 2026</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-card: #16213e;
+      --bg-dark: #0f0f1a;
+      --text-white: #ffffff;
+      --text-gray: #c0c0c0;
+      --accent-teal: #028090;
+      --accent-coral: #F96167;
+      --border-card: #2a3a5e;
+    }
+
+    .reveal {
+      font-family: system-ui, -apple-system, sans-serif;
+      color: var(--text-gray);
+    }
+
+    .reveal .slides section {
+      background-color: var(--bg-primary);
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+      font-family: Consolas, 'Courier New', monospace;
+      color: var(--text-white);
+      text-transform: none;
+    }
+
+    .reveal h1 { font-size: 2.5em; }
+    .reveal h2 { font-size: 1.8em; }
+    .reveal h3 { font-size: 1.4em; }
+
+    .reveal p { line-height: 1.6; }
+
+    .reveal strong { color: var(--text-white); }
+
+    .reveal a { color: var(--accent-teal); }
+
+    .prompt-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 8px;
+      padding: 1.5em 2em;
+      font-family: Consolas, 'Courier New', monospace;
+      text-align: left;
+      font-size: 0.85em;
+      line-height: 1.8;
+      max-width: 850px;
+      margin: 0.8em auto 0;
+      color: var(--text-white);
+    }
+
+    .prompt-card p { margin: 0.2em 0; }
+
+    .prompt-new {
+      color: var(--accent-teal) !important;
+      font-weight: bold;
+    }
+
+    .prompt-label {
+      color: var(--accent-teal);
+      font-size: 0.75em;
+      float: right;
+      font-weight: normal;
+    }
+
+    .setup-line {
+      font-style: italic;
+      color: #888;
+      font-size: 0.75em;
+      margin-bottom: 0.3em;
+    }
+
+    .claudemd-section {
+      border-left: 3px solid var(--accent-teal);
+      padding-left: 1em;
+      margin-bottom: 1em;
+    }
+
+    .accent-coral { color: var(--accent-coral) !important; }
+    .accent-teal { color: var(--accent-teal) !important; }
+
+    .reveal table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      font-size: 0.7em;
+    }
+
+    .reveal table th,
+    .reveal table td {
+      border: 1px solid #2a3a5e;
+      padding: 0.6em 1em;
+      text-align: left;
+    }
+
+    .reveal table th {
+      background: var(--bg-card);
+      color: var(--text-white);
+      font-family: Consolas, 'Courier New', monospace;
+    }
+
+    .reveal table td {
+      background: rgba(22, 33, 62, 0.5);
+    }
+
+    .reveal table td:last-child {
+      color: var(--accent-teal);
+    }
+
+    .text-overlay {
+      background: rgba(15, 15, 26, 0.85);
+      padding: 0.8em 1.5em;
+      border-radius: 8px;
+      font-style: italic;
+      color: var(--text-white);
+      font-size: 1.2em;
+    }
+
+    .qr-container {
+      position: absolute;
+      bottom: 40px;
+      right: 60px;
+    }
+
+    .qr-container canvas,
+    .qr-container img {
+      display: block;
+    }
+
+    .big-command {
+      font-family: Consolas, 'Courier New', monospace;
+      font-size: 2em;
+      color: var(--accent-teal);
+    }
+
+    .placeholder-box {
+      border: 2px dashed #444;
+      padding: 3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      font-style: italic;
+      min-height: 300px;
+    }
+
+    .dim-text { color: #888; }
+
+    .small-text { font-size: 0.65em; }
+    .smaller-text { font-size: 0.55em; }
+
+    .mapping-table {
+      font-family: Consolas, 'Courier New', monospace;
+      text-align: left;
+      font-size: 0.85em;
+      line-height: 2;
+    }
+
+    .mapping-table .arrow { color: var(--accent-teal); }
+
+    @keyframes evilPulse {
+      0%, 100% { text-shadow: 0 0 20px rgba(249,97,103,0.8); }
+      50% { text-shadow: 0 0 40px rgba(249,97,103,1), 0 0 80px rgba(249,97,103,0.4); }
+    }
+
+    @keyframes evilGlitch {
+      0%, 100% { transform: translate(0, 0) skewX(0deg); opacity: 0.4; }
+      20% { transform: translate(-2px, 1px) skewX(-1deg); opacity: 0.3; }
+      40% { transform: translate(1px, -1px) skewX(0.5deg); opacity: 0.5; }
+      60% { transform: translate(-1px, 0) skewX(-0.5deg); opacity: 0.35; }
+      80% { transform: translate(2px, 1px) skewX(1deg); opacity: 0.45; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ============================================ -->
+      <!-- SLIDE 1: TITLE                               -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h1>Claude Code ABQ</h1>
+        <p style="font-size:1.1em; color:#c0c0c0;">"The Most Valuable Developer on Your Team"</p>
+        <p style="margin-top:1.5em;"><a href="https://claudeabq.dev">claudeabq.dev</a></p>
+        <div class="qr-container" id="qr1"></div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 2: WHY WE'RE HERE                      -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h2>Why We're Here</h2>
+        <p style="font-size:1.2em;"><strong>We share what actually works.</strong></p>
+        <ul>
+          <li>Honest about what's working and what isn't — no hype, no marketing</li>
+          <li>We focus on Claude Code because it's the best tool right now.<br>Bring us something better and we'll try it.</li>
+          <li>Developers, non-developers, all levels — if you're curious, you belong here</li>
+        </ul>
+        <aside class="notes">This isn't a fan club. We're not here to sell you on Claude Code. We're here because right now, today, it's the most effective AI coding tool we've found. If someone walks in next month and shows us something that blows it away, we'll be the first ones trying it. Whether you write code for a living or you've never opened a terminal, there's a seat for you.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 3: CALL FOR PRESENTERS                 -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h2>Call for Presenters</h2>
+        <p style="font-size:1.2em;"><strong>Show us something we can use.</strong></p>
+        <ul>
+          <li>About 30 minutes</li>
+          <li>We want workflows, tools, and techniques<br>that developers can implement NOW</li>
+          <li>You don't need to be an expert — share what's working for you</li>
+          <li><strong>Talk to Marty</strong></li>
+        </ul>
+        <aside class="notes">We're looking for presenters. Show us a workflow, a tool, a technique that the people in this room can go home and implement. That's what makes this community valuable.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 4: AUDIENCE CHECK                      -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h2>Quick show of hands...</h2>
+        <p class="fragment">Who writes code professionally?</p>
+        <p class="fragment">Who has used any AI coding tool?</p>
+        <p class="fragment">Who has used Claude Code specifically?</p>
+        <p class="fragment">Who has NEVER written code?</p>
+        <aside class="notes">Quick show of hands so I know who I'm talking to tonight. (Go through each, read the room, acknowledge all groups.) This talk is for ALL of you — the concepts apply whether you code or not.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5a: CLAUDE.AI vs CLAUDE CODE — VISUAL  -->
+      <!-- ============================================ -->
+      <section data-background-image="images/claude-vs-claude-code.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">Two ways to use the same AI. On the left, Claude.ai — a chat in your browser. On the right, Claude Code — running in your terminal, inside your project.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 5b: CLAUDE.AI vs CLAUDE CODE — TABLE   -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h3>Claude.ai vs Claude Code</h3>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Claude.ai</th>
+              <th>Claude Code</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Where</strong></td>
+              <td style="color:#c0c0c0;">Browser / mobile app</td>
+              <td>Your terminal</td>
+            </tr>
+            <tr>
+              <td><strong>What it does</strong></td>
+              <td style="color:#c0c0c0;">Answers, writes, analyzes</td>
+              <td>Reads your code, runs commands, edits files</td>
+            </tr>
+            <tr>
+              <td><strong>Context</strong></td>
+              <td style="color:#c0c0c0;">Only what you paste in</td>
+              <td>All the files in your project + environment</td>
+            </tr>
+            <tr>
+              <td><strong>Agency</strong></td>
+              <td style="color:#c0c0c0;">You copy-paste the output</td>
+              <td>It makes the changes directly</td>
+            </tr>
+            <tr>
+              <td><strong>Analogy</strong></td>
+              <td style="color:#c0c0c0;">Texting a smart friend</td>
+              <td>A developer sitting at your machine</td>
+            </tr>
+          </tbody>
+        </table>
+        <aside class="notes">The key difference is that third row — context. Claude.ai only knows what you paste in. Claude Code can see all the files in your project, understands your environment, your OS. That context is everything.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 6: WHAT ANTHROPIC RELEASED             -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h3>Since Our Last Meetup <span class="dim-text" style="font-size:0.7em;">(Feb 12)</span></h3>
+        <div style="font-size:0.75em; line-height:2.2; text-align:left; max-width:800px; margin:0 auto;">
+          <ul>
+            <li><strong>Sonnet 4.6</strong> — upgraded coding, agents, 1M context window</li>
+            <li><strong>Claude Code Review</strong> — parallel AI agents reviewing every PR</li>
+            <li><strong>Ultrathink is back</strong> — sets effort to high for one turn</li>
+            <li><strong>Auto memory</strong> — per-project, across sessions</li>
+            <li><strong>Skills 2.0</strong> — unified commands &amp; skills, bundled /simplify /batch /loop</li>
+            <li><strong>Effort levels</strong> — simplified to low/medium/high</li>
+            <li><strong>/btw</strong> — ask side questions without interrupting work</li>
+          </ul>
+        </div>
+        <aside class="notes">Rapid fire through each item, ~15-20 seconds per item. Highlight the ones most relevant to the audience. "/btw literally dropped yesterday — you can ask Claude a question WHILE it's working without interrupting it or polluting your conversation history."</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 7: LAST MONTH                          -->
+      <!-- ============================================ -->
+      <section data-background-color="#1a1a2e">
+        <h2>What did we do last month?</h2>
+        <h3 style="margin: 2em; color: #007bff;">tweeter.dev</h3>
+        <h3 style="color: #007bff;">github.com/MartyBonacci/tweeter-abq-2</h3>
+        <aside class="notes">Last month, right here in this room, we built a Twitter clone from scratch using Claude Code. Single prompt to start, SpecSwarm to generate the specs and tasks, React Router v7, and we deployed it live during the demo. Source code is on GitHub. For many of you watching that... it felt like watching black magic.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SLIDE 8: BLACK MAGIC                         -->
+      <!-- ============================================ -->
+      <section data-background-color="#000000" style="background-color: transparent;">
+
+        <!-- Evil echo of slide 7 content — glitching -->
+        <div style="animation: evilGlitch 4s infinite; position:relative; z-index:2;">
+          <h2 style="color:#FF3333;">What did we do last month?</h2>
+          <h3 style="margin:2em; color:#FF3333;">tweeter.dev</h3>
+          <h3 style="color:#FF3333;">github.com/MartyBonacci/tweeter-abq-2</h3>
+        </div>
+
+        <!-- Angled overlay text with pulsing glow -->
+        <div style="position:absolute; top:15%; left:55%; transform:rotate(-8deg); z-index:10; text-align:left; max-width:50%;">
+          <p style="font-size:1.6em; color:#fff;
+                    animation: evilPulse 3s ease-in-out infinite;"><strong>"This feels like black magic..."</strong></p>
+          <p style="font-style:italic; color:#ccc; font-size:1.1em;">...but then you try it and it doesn't work the same way.</p>
+        </div>
+
+        <p class="fragment" style="font-size:1.4em; position:absolute; bottom:5%; left:0; right:0; z-index:20;"><strong class="accent-coral">Let me show you why.</strong></p>
+        <aside class="notes">When you watch someone use Claude Code effectively, it looks effortless. The AI just seems to know what to do. It generates features, fixes bugs, handles deployment. The natural reaction is 'I want to do that too.' But then you try it... and it doesn't work the same way. Let me show you why.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- THE BOARDS SEQUENCE: B-0 through B-31        -->
+      <!-- ============================================ -->
+
+      <!-- B-0: THE SETUP -->
+      <section data-background-color="#1a1a2e">
+        <p style="font-size:1.6em;">Imagine you run a workshop...</p>
+        <aside class="notes">Here's how this works. Every time I need boards nailed together, a brand new person walks in. They've never met anyone before them. I hand them a card. They go in the back room. I never see what happens. They come back with a result. Let me show you how this goes.</aside>
+      </section>
+
+      <!-- B-1: PROMPT — "Nail these two boards together." -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">First person walks in. I hand them this card:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+        </div>
+      </section>
+
+      <!-- B-2: IMAGE -->
+      <section data-background-image="images/two-pieces-of-wood-sandwhiching-a-nail.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">A nail. Between two boards. Together. Instructions followed PERFECTLY. This is what happens when you open a fresh Claude conversation and type 'build me a website.'</aside>
+      </section>
+
+      <!-- B-3: PROMPT — add "nailed into the wood" -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person walks in. I update the card:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+          <p class="prompt-new">The nail needs to be nailed into the wood. <span class="prompt-label">NEW</span></p>
+        </div>
+      </section>
+
+      <!-- B-4: IMAGE -->
+      <section data-background-image="images/one-nail-pressed-in-by-hand.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">A single nail, barely in the wood, would fall over if you breathed on it. They just pushed it in with their hand. We never said to use a tool. Same prompt with one new line, different person, completely different kind of wrong.</aside>
+      </section>
+
+      <!-- B-5: PROMPT — add "Pound the nail in." -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I add another line:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+          <p>The nail needs to be nailed into the wood.</p>
+          <p class="prompt-new">Pound the nail in. <span class="prompt-label">NEW</span></p>
+        </div>
+      </section>
+
+      <!-- B-6: IMAGE -->
+      <section data-background-image="images/one-zig-zag-nail-may-be-pounded-in-with-random-object.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">They pounded! With SOMETHING. Look at those gouge marks — that's not a hammer. That might be a wrench. A rock. A coffee mug. We said 'pound' but never said WHAT to pound with. We keep assuming they know things they don't know. Just like with AI.</aside>
+      </section>
+
+      <!-- B-7: PROMPT — add "Use a hammer." -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I finally add what should have been obvious:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+          <p>The nail needs to be nailed into the wood.</p>
+          <p>Pound the nail in.</p>
+          <p class="prompt-new">Use a hammer. <span class="prompt-label">NEW</span></p>
+        </div>
+      </section>
+
+      <!-- B-8: IMAGE -->
+      <section data-background-image="images/not-sure-if-this-is-one-or-two-twisted-nails-may-be-pounded-in-with-random-pointy-object.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">Is that one nail? Two? How do you get metal to DO that? They have a hammer now but they clearly have no idea how to use it. This is the Claude response where you stare at the output and think 'what reasoning process leads HERE?'</aside>
+      </section>
+
+      <!-- B-9: PROMPT — add "Pound them in straight." -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I add more detail:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+          <p>The nail needs to be nailed into the wood.</p>
+          <p>Pound the nail in. Use a hammer.</p>
+          <p class="prompt-new">Pound them in straight. <span class="prompt-label">NEW</span></p>
+        </div>
+      </section>
+
+      <!-- B-10: IMAGE -->
+      <section data-background-image="images/nailed-into-wood-sideways-but-the-wood-is-butted-end-to-end.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">'Pound them in straight.' And they ARE straight. Perfectly straight. Horizontally. Through the seam of two boards butted end-to-end. We said straight. We didn't say which direction.</aside>
+      </section>
+
+      <!-- B-11: PROMPT — add "Nail the two boards together." -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I emphasize TOGETHER:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+          <p>The nail needs to be nailed into the wood.</p>
+          <p>Pound the nail in. Use a hammer.</p>
+          <p>Pound them in straight.</p>
+          <p class="prompt-new">Nail the two boards together. <span class="prompt-label">NEW</span></p>
+        </div>
+      </section>
+
+      <!-- B-12: IMAGE -->
+      <section data-background-image="images/nailed-into-the-stacked-wood-with-nails-sideways.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">The boards are stacked now! They're actually TOGETHER! But the nails are STILL sideways. We keep solving one problem and revealing the next. Six lines of instructions. Still wrong.</aside>
+      </section>
+
+      <!-- B-13: PROMPT — add "Pound the nails straight down, through both boards." -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I spell out the direction:</p>
+        <div class="prompt-card">
+          <p>Nail these two boards together.</p>
+          <p>The nail needs to be nailed into the wood.</p>
+          <p>Pound the nail in. Use a hammer.</p>
+          <p>Nail the two boards together.</p>
+          <p class="prompt-new">Pound the nails straight down, through both boards. <span class="prompt-label">NEW</span></p>
+        </div>
+      </section>
+
+      <!-- B-14: IMAGE -->
+      <section data-background-image="images/nailed-to-table.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">'Straight DOWN. Through BOTH boards.' And they went straight down. Through both boards. And through the workbench. And out the bottom of the table. We never said to STOP. But hey — the boards are actually CONNECTED. Seven attempts and we have two boards nailed together. They're also nailed to furniture, but still. Progress.</aside>
+      </section>
+
+      <!-- B-15: PROMPT — full paragraph, fresh start -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I write a REAL paragraph this time:</p>
+        <div class="prompt-card" style="font-size:0.75em;">
+          <p>Take two 2x4 boards. Overlap them by 6 inches with edges flush. Using a 16oz claw hammer and 10d common nails, drive 3 nails evenly spaced through the overlap area. Drive them from the top, perpendicular to the surface. Don't nail into the workbench. Don't bend the nails. Don't dent the wood.</p>
+        </div>
+      </section>
+
+      <!-- B-16: IMAGE -->
+      <section data-background-image="images/2-boards-partly-nailed-together-with-three-nails-partway-in.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">NOW we're getting somewhere! Nails are straight. Wood is lined up. Nails are actually connecting the boards. Mostly. One nail only goes through the top board. They're not driven flush. But this is a B-minus. This is RECOGNIZABLE as the right thing. Look at the prompt though. Full paragraph. And this is for ONE joint.</aside>
+      </section>
+
+      <!-- B-17: PROMPT — wall of text / manual -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New person. I write an entire MANUAL:</p>
+        <div class="prompt-card" style="font-size:0.55em; line-height:1.6;">
+          <p><strong>PROJECT CONTEXT:</strong> We are building a load-bearing deck frame. All joints must meet IRC code R507.</p>
+          <p><strong>MATERIALS:</strong> Two #2 grade Southern Yellow Pine 2x4 boards, 8 feet long. 10d hot-dipped galvanized common nails. 16oz claw hammer.</p>
+          <p><strong>TASK:</strong> Create a lap joint. Overlap boards by 6" with edges flush. Drive 3 nails in a triangular pattern. All nails perpendicular. Drive until flush — do not countersink.</p>
+          <p><strong>TECHNIQUE:</strong> Hold nail near the point, tap 2-3 times to set, remove fingers, drive with full swings. Keep wrist straight. Strike dead center.</p>
+          <p><strong>QUALITY:</strong> Edges flush within 1/16". No gaps. No protruding heads. No hammer marks. No bent nails.</p>
+          <p><strong>SAFETY:</strong> Wear glasses. Clamp boards first. Keep fingers 2" from strike zone.</p>
+        </div>
+      </section>
+
+      <!-- B-18: IMAGE — perfect result -->
+      <section data-background-image="images/2-boards-nailed-together-with-3-nails-flush.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">A full PAGE of instructions. Project context. Materials. Technique. Quality standards. Safety. And it WORKS. Three nails, flush, clean, beautiful. But do you want to hand someone THIS CARD every single time you need ONE nail driven?</aside>
+      </section>
+
+      <!-- B-19: PROMPT — callback 1 (no hammer!) -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">New job. I write a fresh card focused on quality and alignment:</p>
+        <div class="prompt-card" style="font-size:0.75em;">
+          <p>Take two 2x4 boards. Overlap by 6 inches, edges perfectly aligned and flush. Drive 3 nails in a triangular pattern through the overlap area. All nails perpendicular to the surface. Nail heads flush with wood. No gaps between boards. No marks on the wood surface. Clamp boards before nailing. Pre-drill if necessary.</p>
+        </div>
+      </section>
+
+      <!-- B-20: IMAGE -->
+      <section data-background-image="images/did-they-try-to-nail-them-in-with-an-axe-or-the-claw-end-of-the-hammer.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">WHAT!? We had it! We just had a PERFECT result! What HAPPENED? This is a GOOD prompt! Overlap, alignment, nail pattern, flush heads, clamping, pre-drilling... what went wrong? (Don't answer yet. Move to next slide.)</aside>
+      </section>
+
+      <!-- B-21: PROMPT — callback 2 (identical card) -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">Must be a fluke. New person, same card:</p>
+        <div class="prompt-card" style="font-size:0.75em;">
+          <p>Take two 2x4 boards. Overlap by 6 inches, edges perfectly aligned and flush. Drive 3 nails in a triangular pattern through the overlap area. All nails perpendicular to the surface. Nail heads flush with wood. No gaps between boards. No marks on the wood surface. Clamp boards before nailing. Pre-drill if necessary.</p>
+        </div>
+      </section>
+
+      <!-- B-22: IMAGE -->
+      <section data-background-image="images/how-did-they-get-the-nails-to-twist-up-like-this.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">Different person, same prompt, different disaster. Same underlying problem. (Still don't reveal. Build tension.)</aside>
+      </section>
+
+      <!-- B-23: PROMPT — callback 3 (identical card) -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">ONE more time. Same card:</p>
+        <div class="prompt-card" style="font-size:0.75em;">
+          <p>Take two 2x4 boards. Overlap by 6 inches, edges perfectly aligned and flush. Drive 3 nails in a triangular pattern through the overlap area. All nails perpendicular to the surface. Nail heads flush with wood. No gaps between boards. No marks on the wood surface. Clamp boards before nailing. Pre-drill if necessary.</p>
+        </div>
+      </section>
+
+      <!-- B-24: IMAGE -->
+      <section data-background-image="images/what-the-is-going-on-here-nails-in-every-direction-and-smashed-wood.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">(Stare at image. Stare at prompt. Back at image.) Wait. Overlap... alignment... nail pattern... perpendicular... flush heads... clamping... pre-drilling... Where's the hammer? There's no hammer in this prompt. We got so focused on the NEW requirements that we forgot to mention THE HAMMER. Three people in a row walked in with a detailed, professional-looking card... and no idea what tool to use. THIS is what happens when you start a new Claude conversation and your 'improved' prompt is missing the one line that was making everything work.</aside>
+      </section>
+
+      <!-- B-25: IMAGE with text overlay — the binder -->
+      <section data-background-image="images/wood-joints-with-pile-of-manuals.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <div style="position:absolute; bottom:80px; left:50%; transform:translateX(-50%);">
+          <div class="text-overlay">The prompt needs EVERYTHING. For every joint type.</div>
+        </div>
+        <aside class="notes">The prompt needs the hammer. The technique. The nail spec. The safety rules. For EVERY type of joint. That's how you end up with THIS. The copy-paste-prompt-engineering lifestyle. Forty-seven Google Docs. And if you accidentally delete one line? The hammer disappears.</aside>
+      </section>
+
+      <!-- B-26: THE TEAM PROBLEM -->
+      <section data-background-color="#1a1a2e">
+        <div style="font-size:1.1em; line-height:2; max-width:700px; margin:0 auto;">
+          <p>You have 5 new hires starting Monday.</p>
+          <p>Each one needs to nail boards.</p>
+          <p>None of them have met each other.</p>
+          <p>None of them have met <strong>YOU.</strong></p>
+          <p style="margin-top:1em;">Do you photocopy the binder?</p>
+          <p>And hope nobody loses the page about the hammer?</p>
+        </div>
+        <aside class="notes">Five new hires. Five fresh AI conversations. Nobody has any context. Every single one will nail-sandwich or pretzel-twist unless you hand them the ENTIRE binder. And pray nobody loses the page about the hammer.</aside>
+      </section>
+
+      <!-- B-27: PROMPT — the employee manual (CLAUDE.md) -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">Or... what if there was an employee manual?</p>
+        <div class="prompt-card">
+          <div class="claudemd-section">
+            <p style="color:#028090; font-weight:bold; margin-bottom:0.5em;">CLAUDE.md:</p>
+            <p>"You are a finish carpenter specializing in residential decks. You follow IRC code R507. You use 10d galvanized nails and a 16oz claw hammer. You pre-drill when necessary. You always clamp before nailing."</p>
+          </div>
+          <p style="margin-top:1em;"><strong>Card:</strong> "Nail these boards together with a lap joint."</p>
+        </div>
+      </section>
+
+      <!-- B-28: IMAGE — same perfect result -->
+      <section data-background-image="images/2-boards-nailed-together-with-3-nails-flush.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">SAME RESULT. Same perfect joint. Same three nails. But the card is ONE LINE. 'Nail these boards together with a lap joint.' What changed? They read the employee manual FIRST. The CLAUDE.md. Now they KNOW they're a finish carpenter. They KNOW the code. And the hammer will NEVER go missing again — it's in the manual, not on individual cards.</aside>
+      </section>
+
+      <!-- B-29: PROMPT — the training program (skill) -->
+      <section data-background-color="#1a1a2e">
+        <p class="setup-line">Or... what if there was a training program?</p>
+        <div class="prompt-card" style="text-align:center; padding:2em;">
+          <p class="big-command">/nail-boards lap-joint</p>
+        </div>
+      </section>
+
+      <!-- B-30: IMAGE — transcendence -->
+      <section data-background-image="images/this-joint-looks-beatiful-even-though-there-are-no-nails.png"
+               data-background-size="contain"
+               data-background-color="#0f0f1a">
+        <aside class="notes">(Long pause.) /nail-boards. One command. And look what came back. They didn't just nail the boards. They understood the project deeply enough to realize a precision wood joint is STRONGER and more beautiful than nails. They went BEYOND instructions because they understood the WHY. That's what happens with deep enough context. AI doesn't just follow instructions — it makes BETTER decisions than you would have specified. All that knowledge? Inside the skill. Runs every time. Runs for everyone. Five new hires? /nail-boards. Building code changes? Update the skill ONCE. The hammer will NEVER go missing.</aside>
+      </section>
+
+      <!-- B-31: THE PUNCHLINE -->
+      <section data-background-color="#1a1a2e">
+        <p class="fragment" style="font-size:1.2em; font-style:italic; color:#c0c0c0;">"The most valuable developer on your team isn't the best coder."</p>
+        <p class="fragment" style="font-size:1.2em; font-style:italic; color:#ffffff; margin-top:1em;">"It's the one who builds the systems that turn EVERY developer into the best coder."</p>
+        <div class="fragment" style="margin-top:1.5em;">
+          <div class="mapping-table">
+            <p><strong>CLAUDE.md</strong> <span class="arrow">&rarr;</span> The employee manual</p>
+            <p><strong>Skills</strong> <span class="arrow">&rarr;</span> The training program</p>
+            <p><strong>Hooks</strong> <span class="arrow">&rarr;</span> The safety rules that ALWAYS apply</p>
+            <p><strong>Commands</strong> <span class="arrow">&rarr;</span> The shortcuts everyone can use</p>
+            <p><strong>Agents</strong> <span class="arrow">&rarr;</span> The specialists you delegate to</p>
+          </div>
+        </div>
+        <aside class="notes">THIS is the talk. The magic last month? Not magic. Months of CLAUDE.md files, skills, specs, hooks — so when I type one command, Claude has ALL the context. And I can SHARE them. Anyone who installs SpecSwarm gets everything I've learned. That's not prompt engineering. That's AI workflow architecture.</aside>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- POST-BOARDS SLIDES 11-22                     -->
+      <!-- ============================================ -->
+
+      <!-- Slide 11: THE REAL SKILL -->
+      <section data-background-color="#1a1a2e">
+        <h2 style="font-size:1.5em;">The real skill isn't prompting.</h2>
+        <h2 style="font-size:1.5em; color:#028090;">It's building training materials.</h2>
+        <aside class="notes">Everything you just saw in the boards sequence — that's what AI-assisted development actually is. Not writing better prompts. Building the training materials that make every prompt work. CLAUDE.md, skills, hooks, agents — those are your tools.</aside>
+      </section>
+
+      <!-- Slide 12: SPECSWARM -->
+      <section data-background-color="#1a1a2e">
+        <h2>SpecSwarm</h2>
+        <p style="font-style:italic; color:#888;">Spec-driven development plugin for Claude Code</p>
+        <p style="margin-top:1.5em; font-size:1.1em;">Describe &rarr; Spec &rarr; Plan &rarr; Tasks &rarr; Build &rarr; Review</p>
+        <p style="margin-top:1.5em;">
+          <a href="https://specswarm.com">specswarm.com</a> &nbsp;|&nbsp;
+          <a href="https://github.com/MartyBonacci/specswarm">github.com/MartyBonacci/specswarm</a>
+        </p>
+        <aside class="notes">This is the real-world example. SpecSwarm packages everything I've learned about spec-driven development into a plugin anyone can install. You describe what you want, it generates a spec, breaks it into a plan, creates tasks, and Claude executes. This is what I used to build tweeter.dev last month.</aside>
+      </section>
+
+      <!-- Slide 13: TRAIN YOUR NEW HIRE -->
+      <section data-background-color="#1a1a2e">
+        <h3>What if you could train your new hire instantly?</h3>
+        <p style="margin-top:1.5em; font-family:Consolas,'Courier New',monospace; font-size:1.3em; color:#028090;">claude plugin install specswarm</p>
+        <aside class="notes">Remember the new hires? The ones who kept sandwiching nails and destroying workbenches? What if on their first day, you could give them all of your accumulated knowledge in one command? That's what this is. Months of workflow knowledge, installed in seconds. Every new hire — every new Claude session — starts fully trained.</aside>
+      </section>
+
+      <!-- Slide 14: HOW I BUILT SPECSWARM -->
+      <section data-background-color="#1a1a2e">
+        <p style="font-size:1.4em; font-family:Consolas,'Courier New',monospace;">
+          CLAUDE.md &rarr; Commands &rarr; Skills &rarr; Plugin
+        </p>
+        <p style="margin-top:1.5em; font-style:italic; color:#888;">Each layer made the next project faster.</p>
+        <aside class="notes">SpecSwarm was itself built with Claude Code. Started as CLAUDE.md instructions, grew into custom commands, evolved into skills, packaged as a plugin. That progression IS the lesson. Start with a good CLAUDE.md. Notice patterns. Extract them. Share them.</aside>
+      </section>
+
+      <!-- Slide 15: THE EXTENSIBILITY STACK -->
+      <section data-background-color="#1a1a2e">
+        <h3>The Extensibility Stack</h3>
+        <table style="font-size:0.65em;">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>What</th>
+              <th>Deterministic?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CLAUDE.md</strong></td>
+              <td>Project memory</td>
+              <td>Always loaded</td>
+            </tr>
+            <tr>
+              <td><strong>Skills</strong></td>
+              <td>Reusable playbooks</td>
+              <td>Claude decides when</td>
+            </tr>
+            <tr>
+              <td><strong>Commands</strong></td>
+              <td>/slash triggers</td>
+              <td>User-triggered</td>
+            </tr>
+            <tr>
+              <td><strong>Hooks</strong></td>
+              <td>Shell scripts at lifecycle events</td>
+              <td>Always fires</td>
+            </tr>
+            <tr>
+              <td><strong>Subagents</strong></td>
+              <td>Isolated workers, own context</td>
+              <td>Claude delegates</td>
+            </tr>
+            <tr>
+              <td><strong>Plugins</strong></td>
+              <td>Bundled &amp; shareable</td>
+              <td>Mixed</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top:1em; font-style:italic; font-size:0.8em; color:#c0c0c0;">"CLAUDE.md for memory. Skills for routines. Hooks for guarantees. Agents for delegation."</p>
+        <aside class="notes">This is your reference slide. Take a photo. The key insight is that bottom line — hooks GUARANTEE execution, everything else is probabilistic. If something MUST happen every time, it's a hook, not a prompt.</aside>
+      </section>
+
+      <!-- Slide 16: BOOTCAMP NAMING -->
+      <section data-background-color="#1a1a2e">
+        <h3>Help us name the bootcamp.</h3>
+        <p style="font-size:1.3em; margin-top:1em;"><strong>"Web Development &amp; AI Tools"</strong></p>
+        <p style="font-style:italic; color:#888;">or</p>
+        <p style="font-size:1.3em;"><strong>"Web Development + AI Integration"</strong></p>
+        <p style="margin-top:1.5em; color:#888;">Show of hands.</p>
+        <aside class="notes">We just added two weeks of AI-assisted development to our web dev bootcamp. We need a name. Show of hands — who likes 'Web Development & AI Tools'? And who likes 'Web Development + AI Integration'?</aside>
+      </section>
+
+      <!-- Slide 17: THE SPICY QUESTION -->
+      <section data-background-color="#1a1a2e">
+        <h2>Should we offer a<br><span class="accent-coral">Vibe Coding Bootcamp?</span></h2>
+        <aside class="notes">Now here's the thing — we're still teaching the full web dev curriculum. Our grads can code without AI. That's important. But I'm curious... who thinks we should offer a Vibe Coding Bootcamp? (Read the room. This is market research.)</aside>
+      </section>
+
+      <!-- Slide 18: DEEP DIVE CODING -->
+      <section data-background-color="#1a1a2e">
+        <h2>Deep Dive Coding</h2>
+        <p style="font-style:italic; color:#c0c0c0;">12-week full-stack web development bootcamp</p>
+        <p style="color:#028090;">Now with 2 weeks of AI-assisted development</p>
+        <p style="margin-top:1.5em;">Right here at CNM STEMulus Center</p>
+        <p><a href="https://deepdivecoding.com">deepdivecoding.com</a></p>
+        <aside class="notes">We're integrating AI-assisted development into the bootcamp curriculum. Students learn to build WITH AI from day one. If you're interested in transitioning into tech or leveling up, talk to me after.</aside>
+      </section>
+
+      <!-- Slide 19: CALL FOR PRESENTERS (SECOND ASK) -->
+      <section data-background-color="#1a1a2e">
+        <h2>Show us something we can use.</h2>
+        <p style="font-style:italic; color:#888;">~30 minutes. Talk to Marty.</p>
+        <aside class="notes">Remember from the beginning — we need presenters. Workflows, tools, techniques developers can implement now. Talk to me.</aside>
+      </section>
+
+      <!-- Slide 20: Q&A -->
+      <section data-background-color="#1a1a2e">
+        <h1>Questions?</h1>
+        <aside class="notes">Open floor. No question too basic — this stuff changes every week.</aside>
+      </section>
+
+      <!-- Slide 21: MINGLE -->
+      <section data-background-color="#1a1a2e">
+        <h2>Mingle. Share. Help each other.</h2>
+        <p style="margin-top:1.5em;">Open your laptops. Show your neighbor what you're working on.</p>
+        <p style="margin-top:1.5em;"><a href="https://docs.anthropic.com/en/docs/claude-code/getting-started">docs.anthropic.com/en/docs/claude-code/getting-started</a></p>
+        <aside class="notes">This is the best part. Get up, move around, introduce yourself to someone you haven't met. Show each other what you're building. If you need help getting set up with Claude Code, find someone who's already using it — or find me. This is why we meet in person.</aside>
+      </section>
+
+      <!-- Slide 22: CLOSING -->
+      <section data-background-color="#1a1a2e">
+        <h2><a href="https://claudeabq.dev">claudeabq.dev</a></h2>
+        <div id="qr2" style="margin:1em auto; width:200px;"></div>
+        <p><a href="https://github.com/MartyBonacci/claude-abq-3-12-26">github.com/MartyBonacci/claude-abq-3-12-26</a></p>
+        <p style="margin-top:1.5em; color:#888;">See you next month.</p>
+        <aside class="notes">Register for next month. Tonight's slides, images, and reference materials are all in the GitHub repo. Thanks for being here.</aside>
+      </section>
+
+    </div><!-- .slides -->
+  </div><!-- .reveal -->
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.min.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      plugins: [RevealNotes],
+      width: 1920,
+      height: 1080,
+      margin: 0.04
+    });
+
+    // Generate QR codes
+    function makeQR(targetId, url, cellSize) {
+      var qr = qrcode(0, 'M');
+      qr.addData(url);
+      qr.make();
+      var el = document.getElementById(targetId);
+      if (el) {
+        el.innerHTML = qr.createSvgTag(cellSize || 5);
+        // Style the SVG
+        var svg = el.querySelector('svg');
+        if (svg) {
+          svg.style.background = '#ffffff';
+          svg.style.padding = '8px';
+          svg.style.borderRadius = '4px';
+        }
+      }
+    }
+
+    makeQR('qr1', 'https://luma.com/eal0lrdd', 4);
+    makeQR('qr2', 'https://luma.com/eal0lrdd', 5);
+  </script>
+</body>
+</html>
